@@ -26,7 +26,7 @@ public class JsonParser {
         if (!matcher.find())
             throw new IllegalArgumentException("Items not found.");
 
-        String[] items = matcher.group(1).split("\\},\\{}");
+        String[] items = matcher.group(1).split("\\},\\{");
 
         List<Map<String, String>> data = new ArrayList<>();
 

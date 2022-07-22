@@ -53,56 +53,48 @@ public class SocialSticker {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        try {
+        // Get a JSON with movies
+        String body = getMovies("https://raw.githubusercontent.com/alura-cursos/imersao-java/api/TopMovies.json");
 
-            // Get a JSON with movies
-            String body = getMovies("https://raw.githubusercontent.com/alexfelipe/imersao-java/json/top250.json");
+        // Parse JSON to extract interesting data: title, poster and rating.
+        List<Map<String, String>> moviesList = JsonParser.parse(body);
 
-            // Parse JSON to extract interesting data: title, poster and rating.
-            List<Map<String, String>> moviesList = JsonParser.parse(body);
+        // Check the output directory
+        String directoryPath = getOutputDirectory();
+        File directory = new File(directoryPath);
 
-            // Check the output directory
-            String directoryPath = getOutputDirectory();
-            File directory = new File(directoryPath);
+        if (!directory.exists()) {
 
-            if (!directory.exists()) {
+            if (!directory.mkdirs()) {
 
-                if (!directory.mkdirs()) {
-
-                    System.out.println("Directory creation error!");
-                    System.exit(1);
-
-                }
+                System.out.println("Directory creation error!");
+                System.exit(1);
 
             }
 
-            // Display data
-            for (Map<String, String> movie : moviesList) {
+        }
 
-                Movie mv = new Movie(movie.get("title"), movie.get("image"), Double.parseDouble(movie.get("imDbRating")));
+        // Display data
+        for (Map<String, String> movie : moviesList) {
 
-                System.out.print("Generating sticker for " + mv.getTitle() + "... ");
+            Movie mv = new Movie(movie.get("title"), movie.get("image"), Double.parseDouble(movie.get("imDbRating")));
 
-                try {
+            System.out.print("Generating sticker for " + mv.getTitle() + "... ");
 
-                    Sticker st = new Sticker(new URL(mv.getImageUrl()).openStream(), mv.getTitle(), "BORAVÊ!!!",
-                            directoryPath);
-                    st.create();
-                    System.out.println("Done!");
+            try {
 
-                } catch (Exception e) {
+                Sticker st = new Sticker(new URL(mv.getImageUrl()).openStream(), mv.getTitle(), "BORAVÊ!!!",
+                        directoryPath);
+                st.create();
+                System.out.println("Done!");
 
-                    System.out.println("Error: " + e.getMessage());
+            } catch (Exception e) {
 
-                }
+                System.out.println("Error: " + e.getMessage());
 
             }
-
-        } catch (Exception e) {
-
-            throw new RuntimeException(e);
 
         }
 
