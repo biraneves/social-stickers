@@ -29,12 +29,12 @@ public class Movie extends Content implements AnsiTerminal {
     private String getStars() {
 
         int roundRating = (int) Math.round(getImDbRating());
-        String stars = "";
+        StringBuilder stars = new StringBuilder();
 
         for (int i = 0; i < roundRating; i++)
-            stars += "\uD83C\uDF1F";
+            stars.append("\uD83C\uDF1F");
 
-        return stars;
+        return stars.toString();
 
     }
 
