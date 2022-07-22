@@ -7,7 +7,7 @@ package com.biraneves.service.ansi;
  * @author biraneves
  *
  */
-interface AnsiTerminal {
+public interface AnsiTerminal {
 
     // Color reset
     String RESET = "\u001b[0m";  // Reset color and effect
