@@ -13,7 +13,7 @@ import java.util.Scanner;
  * @author biraneves
  *
  */
-public class SocialSticker {
+public class SocialStickers {
 
     public static String getOutputDirectory() {
 
