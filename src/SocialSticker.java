@@ -1,13 +1,10 @@
 import com.biraneves.service.json.JsonParser;
+import com.biraneves.service.net.HttpClient;
 import com.biraneves.social_stickers.Movie;
 import com.biraneves.social_stickers.Sticker;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -20,17 +17,6 @@ import java.util.Scanner;
  *
  */
 public class SocialSticker {
-
-    public static String getMovies(String url) throws Exception {
-
-        URI address = URI.create(url);  // URI to the API.
-        HttpClient client = HttpClient.newHttpClient(); // HTTP client to send a request to the API.
-        HttpRequest request = HttpRequest.newBuilder(address).GET().build();    // Request to consume the API.
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString()); // Resulting text from the API.
-
-        return response.body();
-
-    }
 
     public static String getOutputDirectory() {
 
@@ -53,13 +39,17 @@ public class SocialSticker {
 
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         // Get a JSON with movies
-        String body = getMovies("https://raw.githubusercontent.com/alura-cursos/imersao-java/api/TopMovies.json");
+        String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java/api/TopMovies.json";
+//        String url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY";
+
+        HttpClient http = new HttpClient();
+        String json = http.getData(url);
 
         // Parse JSON to extract interesting data: title, poster and rating.
-        List<Map<String, String>> moviesList = JsonParser.parse(body);
+        List<Map<String, String>> contentsList = JsonParser.parse(json);
 
         // Check the output directory
         String directoryPath = getOutputDirectory();
@@ -77,7 +67,7 @@ public class SocialSticker {
         }
 
         // Display data
-        for (Map<String, String> movie : moviesList) {
+        for (Map<String, String> movie : contentsList) {
 
             Movie mv = new Movie(movie.get("title"), movie.get("image"), Double.parseDouble(movie.get("imDbRating")));
 
