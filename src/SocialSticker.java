@@ -1,5 +1,6 @@
 import com.biraneves.service.net.HttpClient;
 import com.biraneves.social_stickers.Content;
+import com.biraneves.social_stickers.ImdbContentExtractor;
 import com.biraneves.social_stickers.NasaContentExtractor;
 import com.biraneves.social_stickers.Sticker;
 
@@ -41,13 +42,15 @@ public class SocialSticker {
     public static void main(String[] args) {
 
         // Get a JSON with movies
-        // String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java/api/TopMovies.json";
-        String url = "https://api.nasa.gov/planetary/apod?count=3&api_key=DEMO_KEY";
+        String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java/api/TopMovies.json";
+        ImdbContentExtractor extractor = new ImdbContentExtractor();
+
+//        String url = "https://api.nasa.gov/planetary/apod?count=3&api_key=DEMO_KEY";
+//        NasaContentExtractor extractor = new NasaContentExtractor();
 
         HttpClient http = new HttpClient();
         String json = http.getData(url);
 
-        NasaContentExtractor extractor = new NasaContentExtractor();
         List<Content> contents = extractor.extractContents(json);
 
         // Check the output directory
