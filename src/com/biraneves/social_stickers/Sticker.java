@@ -74,7 +74,7 @@ public class Sticker {
         graphic.drawImage(originalImage, 0, 0, null);
 
         // Write a string on the new image
-        Font font = new Font(Font.SANS_SERIF, Font.BOLD, 128);
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD, 32);
         graphic.setFont(font);
         graphic.setColor(Color.ORANGE);
 

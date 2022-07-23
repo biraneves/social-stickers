@@ -39,11 +39,14 @@ public class SocialStickers {
     public static void main(String[] args) {
 
         // Get a JSON with movies
-        String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java/api/TopMovies.json";
-        ContentExtractor extractor = new ImdbContentExtractor();
+//        String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java/api/TopMovies.json";
+//        ContentExtractor extractor = new ImdbContentExtractor();
 
 //        String url = "https://api.nasa.gov/planetary/apod?count=3&api_key=DEMO_KEY";
 //        ContentExtractor extractor = new NasaContentExtractor();
+
+        String url = "http://localhost:8080/languages";
+        ContentExtractor extractor = new LangContentExtractor();
 
         HttpClient http = new HttpClient();
         String json = http.getData(url);
@@ -74,7 +77,7 @@ public class SocialStickers {
 
             try {
 
-                Sticker st = new Sticker(new URL(cont.getImageUrl()).openStream(), cont.getTitle(), "BORAVÊ!!!",
+                Sticker st = new Sticker(new URL(cont.getImageUrl()).openStream(), cont.getTitle(), "IT ROCKS!!!",
                         directoryPath);
                 st.create();
                 System.out.println("Done!");
