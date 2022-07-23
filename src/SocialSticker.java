@@ -1,12 +1,11 @@
-import com.biraneves.service.json.JsonParser;
 import com.biraneves.service.net.HttpClient;
-import com.biraneves.social_stickers.Movie;
+import com.biraneves.social_stickers.Content;
+import com.biraneves.social_stickers.NasaContentExtractor;
 import com.biraneves.social_stickers.Sticker;
 
 import java.io.File;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -42,14 +41,14 @@ public class SocialSticker {
     public static void main(String[] args) {
 
         // Get a JSON with movies
-        String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java/api/TopMovies.json";
-//        String url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY";
+        // String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java/api/TopMovies.json";
+        String url = "https://api.nasa.gov/planetary/apod?count=3&api_key=DEMO_KEY";
 
         HttpClient http = new HttpClient();
         String json = http.getData(url);
 
-        // Parse JSON to extract interesting data: title, poster and rating.
-        List<Map<String, String>> contentsList = JsonParser.parse(json);
+        NasaContentExtractor extractor = new NasaContentExtractor();
+        List<Content> contents = extractor.extractContents(json);
 
         // Check the output directory
         String directoryPath = getOutputDirectory();
@@ -67,15 +66,15 @@ public class SocialSticker {
         }
 
         // Display data
-        for (Map<String, String> movie : contentsList) {
+        for (Content content : contents) {
 
-            Movie mv = new Movie(movie.get("title"), movie.get("image"), Double.parseDouble(movie.get("imDbRating")));
+            Content cont = new Content(content.getTitle(), content.getImageUrl());
 
-            System.out.print("Generating sticker for " + mv.getTitle() + "... ");
+            System.out.print("Generating sticker for " + cont.getTitle() + "... ");
 
             try {
 
-                Sticker st = new Sticker(new URL(mv.getImageUrl()).openStream(), mv.getTitle(), "BORAVÊ!!!",
+                Sticker st = new Sticker(new URL(cont.getImageUrl()).openStream(), cont.getTitle(), "BORAVÊ!!!",
                         directoryPath);
                 st.create();
                 System.out.println("Done!");
