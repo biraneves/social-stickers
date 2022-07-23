@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ImdbContentExtractor {
+public class ImdbContentExtractor implements ContentExtractor {
 
+    @Override
     public List<Content> extractContents(String json) {
 
         List<Map<String, String>> attributesList = JsonParser.parse(json);
